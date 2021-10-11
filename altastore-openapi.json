@@ -1,0 +1,197 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+        "title":"ALTA API Documentation",
+        "version":"1.0",
+        "description": "ALTA Store API from Alterra Academy",
+        "termsOfService": "https://alta.id",
+        "contact": {
+            "name": "Alta Ranger",
+            "email": "alta@gmail.com",
+            "url": "https://alta.id"
+        },
+        "license": {
+            "name": "APACHE 2.0"
+        }
+    },
+    "externalDocs": {
+        "url": "https://alta.id",
+        "description": "Full documentation about alta api"
+    },
+    "servers": [
+        {
+            "description": "ALTA API server",
+            "url":"https://{environment}.api.alta.id",
+            "variables": {
+                "environment":{
+                    "default": "dev",
+                    "enum": [
+                        "dev",
+                        "qa",
+                        "prod"
+                    ]
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "tags": ["Auth"],
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Auth"],
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": ["Users"],
+                "description":"",
+                "parameters": [],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "name":{
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    "email":{
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    "password":{
+                                        "type": "string",
+                                        "minLength": 1
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "status":{
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "message":{
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+    
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Users"],
+                "summary": "Get All Users",
+                "description": "url for get all users",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "put": {
+                "tags": ["Users"],
+                "summary": "Access specific user",
+                "description":"",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "include id user",
+                    "schema":{
+                        "type": "integer",
+                        "nullable": false,
+                        "minimum": 1
+
+                    }
+
+
+                    
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Users"],
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                        "status":{
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "message":{
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+    
+                                    }
+                                },
+                                "examples":{
+                                    "success":{
+                                        "description": "example success",
+                                        "value":
+                                            {
+                                                "status": "success",
+                                                "message": "success delete user"
+                                            }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    },
+    "components": {}
+}
