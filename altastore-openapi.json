@@ -126,6 +126,27 @@
             }
         },
         "/users/{id}": {
+            "get": {
+                "tags": ["Users"],
+                "description":"get user by id",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "include id user",
+                    "schema":{
+                        "type": "integer",
+                        "nullable": false,
+                        "minimum": 1
+
+                    }   
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
             "put": {
                 "tags": ["Users"],
                 "summary": "Access specific user",
