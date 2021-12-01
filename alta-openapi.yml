@@ -422,8 +422,10 @@ components:
           type: string
         },
         "data": {
-          type: array
-
+          type: array,
+          items: {
+            type: object
+          }
         }
       }
 
