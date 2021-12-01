@@ -33,24 +33,84 @@ paths:
     post:
       tags:
         - Auth
+      summary: login user
       description: Login user
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  example: alta@mail.com
-                password:
-                  type: string
-                  example: inipassword
+              $ref: '#/components/schemas/requestLogin'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  email: "alta@alterra.id",
+                  password: "inipassword"
+                }
+              userData2:
+                description: "Example data user"
+                value: {
+                  email: "alta2@alterra.id",
+                  password: "inipassword2"
+                }
+              # type: object
+              # properties:
+              #   email:
+              #     type: string
+              #     example: alta@mail.com
+              #   password:
+              #     type: string
+              #     example: inipassword
       responses:
         '200':
-          $ref: '#/components/responses/loginSuccess'
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseLoginSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    code: 200,
+                    status: "success",
+                    message: "Login Success",
+                    data: {
+                      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+                    }
+                  }
+                responseData2:
+                  description: response success 2
+                  value: {
+                    code: 200,
+                    status: "success",
+                    message: "Login Success",
+                    data: {
+                      token: "AyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+                    }
+                  }
+
         '400':
-          $ref: '#/components/responses/loginFailed'
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/failedResponse'
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    code: 400,
+                    status: "failed",
+                    message: "Login Failed. Email and Password incorrect."
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    code: 400,
+                    status: "failed",
+                    message: "Login Failed. Your email doesn't match any entry"
+                  }
   ####################################
   #  USERS
   ####################################
@@ -280,6 +340,16 @@ paths:
 #    COMPONENT
 #==================================#
 components:
+
+  #==================================#    
+  #    JWT
+  #==================================#
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
   #==================================#
   #    SCHEMAS
   #==================================#
@@ -353,6 +423,7 @@ components:
         },
         "data": {
           type: array
+
         }
       }
 
@@ -382,6 +453,22 @@ components:
         "description":
           type: string
           minLength: 1
+    responseLoginSuccess:
+      type: object
+      properties: {
+        "code":{
+          type: number
+        },
+        "message": {
+          type: string
+        },
+        "status": {
+          type: string
+        },
+        "data":{
+          type: object
+        }
+      }
     successResponse:
       type: object
       properties: {
@@ -437,15 +524,6 @@ components:
                 address:
                   type: string
                   example: Jakarta
-  #==================================#    
-  #    JWT
-  #==================================#
-  securitySchemes:
-    JWTAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: "use Token"
 
   responses:
     #==================================#
