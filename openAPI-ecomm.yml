@@ -1,0 +1,1407 @@
+openapi: "3.0.3"
+info:
+  title: "ALTA E-COMMERCE"
+  version: "1.0.0"
+  description: "API Documentation for ALTA E-Commerce"
+  contact:
+    name: Official
+    url: https://academy.alterra.id
+    email: fakhry@alterra.id
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/iffakhry/ecommerce/1.0.0
+
+tags:
+  - name: Login
+    description: Endpoint for verifying who a user is
+  - name: Sign Up
+    description: Endpoint for user registration
+  - name: Users
+    description: Endpoint for perform operations on user
+  - name: Products
+    description: Endpoint for perform operations on product
+  - name: Carts
+    description: Endpoint for perform operations on cart
+  - name: Orders
+    description: Endpoint for perform operations on order
+paths:
+  ####################################
+  #  AUTHENTICATION
+  ####################################
+  /login:
+    post:
+      tags:
+        - Login
+      summary: Get token for access to account
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyLogin"
+      responses:
+        "200":
+          $ref: "#/components/responses/loginSuccess"
+        "400":
+          $ref: "#/components/responses/loginFailed"
+  ####################################
+  #  SIGN UP
+  ####################################
+  /signup:
+    post:
+      tags:
+        - Sign Up
+      summary: Create a new account for customer only
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyUser"
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/createUserFailed"
+  ####################################
+  #  USERS
+  ####################################
+  /users/details:
+    get:
+      tags:
+        - Users
+      summary: Get user's data by id
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getUserSuccess"
+        "400":
+          $ref: "#/components/responses/getDataByIdFailed"
+  /users:
+    put:
+      tags:
+        - Users
+      summary: Edit user's data by id
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyUserUpdate"
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/updateUserFailed"
+    delete:
+      tags:
+        - Users
+      summary: Delete user's data by id
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/deleteDataByIdFailed"
+  ####################################
+  #  PRODUCTS
+  ####################################
+  /products:
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyProduct"
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/createProductFailed"
+    get:
+      tags:
+        - Products
+      summary: Get all products
+      responses:
+        "200":
+          $ref: "#/components/responses/getAllProductsSuccess"
+        "400":
+          $ref: "#/components/responses/getAllDataFailed"
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by id
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/getProductSuccess"
+        "400":
+          $ref: "#/components/responses/getDataByIdFailed"
+    put:
+      tags:
+        - Products
+      summary: Update product by id for product owner only
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyProductUpdate"
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/updateProductFailed"
+    delete:
+      tags:
+        - Products
+      summary: Delete product by id for product owner only
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/deleteDataByIdFailed"
+  /products/users:
+    get:
+      tags:
+        - Products
+      summary: Get user's products
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getProductsByUserIdSuccess"
+        "400":
+          $ref: "#/components/responses/getDataByIdFailed"
+  ####################################
+  #  CART
+  ####################################
+  /carts:
+    post:
+      tags:
+        - Carts
+      summary: Create a new cart
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyAddCart"
+      responses:
+        "200":
+          $ref: "#/components/responses/createcartsuccess"
+        "400":
+          $ref: "#/components/responses/createOrderFailed"
+    get:
+      tags:
+        - Carts
+      summary: Get cart
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getordersuccess"
+        "400":
+          $ref: "#/components/responses/OrderResponseFailed"
+  /carts/{id}:
+    put:
+      tags:
+        - Carts
+      summary: Update cart by id order
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyUpdateCart"
+      responses:
+        "200":
+          $ref: "#/components/responses/Updatecartsuccess"
+        "400":
+          $ref: "#/components/responses/UpdateCartFailed"
+    delete:
+      tags:
+        - Carts
+      summary: Delete cart by id
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/successOperationNonData"
+        "400":
+          $ref: "#/components/responses/deleteDataByIdFailed"
+
+  ####################################
+  #  ORDERS
+  ####################################
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: Create a new order
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyOrder"
+      responses:
+        "200":
+          $ref: "#/components/responses/createcartsuccess"
+        "400":
+          $ref: "#/components/responses/createOrderFailed"
+    get:
+      tags:
+        - Orders
+      summary: Get order
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getordersuccess"
+        "400":
+          $ref: "#/components/responses/OrderResponseFailed"
+  /orders/{id}:
+    get:
+      tags:
+        - Orders
+      summary: Get Detail order by Id
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getorderbyidsuccess"
+        "400":
+          $ref: "#/components/responses/OrderResponseFailed"
+  /orders/{id}/confirm:
+    post:
+      tags:
+        - Orders
+      summary: Get Detail order by Id
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/requestBodyConfirmOrder"
+      responses:
+        "200":
+          $ref: "#/components/responses/confirmordersuccess"
+        "400":
+          $ref: "#/components/responses/OrderResponseFailed"
+  /orders/{id}/cancel:
+    put:
+      tags:
+        - Orders
+      summary: Get Detail order by Id
+      parameters:
+        - $ref: "#/components/parameters/idParam"
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/confirmordersuccess"
+        "400":
+          $ref: "#/components/responses/OrderResponseFailed"
+####################################
+#  COMPONENTS
+####################################
+components:
+  schemas:
+    requestDataLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    requestDataUser:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          minLength: 1
+          pattern: "^0-9A-Za-z_.$"
+        email:
+          type: string
+          format: email
+          minLength: 5
+          description: inputted email must be unique
+        password:
+          type: string
+          minLength: 6
+    requestDataProductjson:
+      type: object
+      required:
+        - name_product
+        - detail_product
+        - price
+        - stock
+        - file
+      properties:
+        name_product:
+          type: string
+          minLength: 1
+        detail_product:
+          type: string
+          minLength: 1
+        price:
+          type: integer
+          minimum: 1
+        stock:
+          type: integer
+          minimum: 2
+    
+    requestDataProduct:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          type: string
+          format: binary
+          description: "allowed file extension: jpg, png, jpeg && size <= 1050000 byte"
+    requestDataProductUpdate:
+      type: object
+      required:
+        - name_product
+        - detail_product
+        - price
+        - stock
+        - file
+      properties:
+        name_product:
+          type: string
+          minLength: 1
+        detail_product:
+          type: string
+          minLength: 1
+        price:
+          type: integer
+          minimum: 1
+        stock:
+          type: integer
+          minimum: 2
+        file:
+          type: string
+          format: binary
+          description: "allowed file extension: jpg, png, jpeg && size <= 1050000 byte"
+    ###
+    requestDataOrder:
+      type: object
+      required:
+        - receiver
+        - phone
+        - address
+        - cartid
+      properties:
+        receiver:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        cartid:
+          type: integer
+    requestDataOrderUpdate:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+    responseLoginWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            Name:
+              type: string
+            Token:
+              type: string
+            Role:
+              type: string
+        Message:
+          type: string
+    responseUserWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            Name:
+              type: string
+            Email:
+              type: string
+            Phone:
+              type: string
+        Message:
+          type: string
+    responseUserWithDataArray:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              email:
+                type: string
+              phone:
+                type: string
+        message:
+          type: string
+    responseProductWithData:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            detail:
+              type: string
+            price:
+              type: integer
+            stock:
+              type: integer
+            photo:
+              type: string
+              format: binary
+            url:
+              type: string
+            userid:
+              type: integer
+        message:
+          type: string
+    responseProductWithDataArray:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name_product:
+                type: string
+              detail_product:
+                type: string
+              price:
+                type: integer
+              stock:
+                type: integer
+              photo:
+                type: string
+                format: binary
+              url:
+                type: string
+              userid:
+                type: integer
+        message:
+          type: string
+    responseGroupProductWithData:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            products_id:
+              type: integer
+            NameGroupProduct:
+              type: string
+            Stock:
+              type: integer
+            CapacityGroupProduct:
+              type: integer
+            Price:
+              type: integer
+            AdminFee:
+              type: integer
+            TotalPrice:
+              type: integer
+            DurationGroup:
+              type: string
+            Name_Product:
+              type: string
+            Status:
+              type: string
+            Url:
+              type: string
+            GetOrder:
+              type: array
+              items:
+                type: object
+                properties:
+                  OrderID:
+                    type: integer
+                  UsersID:
+                    type: integer
+                  GroupProductID:
+                    type: integer
+                  Name:
+                    type: string
+        message:
+          type: string
+    responseGroupProductWithDataArray:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              ID:
+                type: integer
+              ProductsID:
+                type: integer
+              NameGroupProduct:
+                type: string
+              Stock:
+                type: integer
+              CapacityGroupProduct:
+                type: integer
+              Price:
+                type: integer
+              AdminFee:
+                type: integer
+              TotalPrice:
+                type: integer
+              DurationGroup:
+                type: string
+              Name_Product:
+                type: string
+              Status:
+                type: string
+              Url:
+                type: string
+              GetOrder:
+                type: array
+                nullable: true
+                items:
+                  type: object
+                  properties:
+                    OrderID:
+                      type: integer
+                    UsersID:
+                      type: integer
+                    GroupProductID:
+                      type: integer
+                    Name:
+                      type: string
+        Message:
+          type: string
+    responseCreateGroupProductWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Data:
+          type: object
+          properties:
+            GroupProductID:
+              type: integer
+        Message:
+          type: string
+    responseCreateOrderWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Data:
+          type: object
+          properties:
+            OrderID:
+              type: integer
+            EwalletType:
+              type: string
+            ExternalId:
+              type: string
+            Amount:
+              type: number
+            BusinessId:
+              type: string
+            Created:
+              type: string
+        Message:
+          type: string
+    responseOrderWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            UserID:
+              type: integer
+            GroupProductID:
+              type: integer
+            NameProduct:
+              type: string
+            PriceOrder:
+              type: integer
+            DetailCredential:
+              type: string
+        Message:
+          type: string
+    responseOrderWithDataArray:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Data:
+          type: array
+          items:
+            type: object
+            properties:
+              OrderID:
+                type: integer
+              UsersID:
+                type: integer
+              GroupProductID:
+                type: integer
+              NameProduct:
+                type: string
+              PriceOrder:
+                type: integer
+              DetailCredential:
+                type: string
+        Message:
+          type: string
+    responseNonData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+  parameters:
+    idParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  requestBodies:
+    requestBodyLogin:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataLogin"
+          example:
+            email: user1@gmail.com
+            password: qwerty
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/requestDataLogin"
+    requestBodyUser:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataUser"
+          examples:
+            newUser1:
+              value:
+                name: user1
+                email: user1@gmail.com
+                password: qwerty
+            newUser2:
+              value:
+                name: user2
+                email: user2@ggmail.com
+                password: asd!@#12
+            newUser3:
+              value:
+                name: john
+                email: john@gmail.com
+                password: test123
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/requestDataUser"
+    requestBodyUserUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataUser"
+          examples:
+            newData1:
+              value:
+                name: John
+                email: john@mail.com
+                password: newpass
+                phone: "0981234"
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/requestDataUser"
+    requestBodyAddCart:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#"
+          example:
+            product_id: 1
+            quantity: 1
+    requestBodyUpdateCart:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#"
+          example:
+            quantity: 1
+    requestBodyProduct:
+      required: true
+      content:
+        #multipart/form-data:
+         # schema:
+          #  $ref: "#/components/schemas/requestDataProduct"
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataProductjson"
+          example:
+            name: "joko"
+            detail: "082302xxxx"
+            stock: 5
+            price: 10000
+            url: "https://link-image.alterra.id/photo.jpg"
+            category: "elektronik"
+            
+    requestBodyProductUpdate:
+      required: true
+      content:
+        #multipart/form-data:
+         # schema:
+          #  $ref: "#/components/schemas/requestDataProduct"
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataProductjson"
+          example:
+            name: "joko"
+            detail: "082302xxxx"
+            stock: 5
+            proce: 10000
+            url: "https://link-image.alterra.id/photo.jpg"
+            category: "elektronik"
+    requestBodyOrder:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataOrder"
+          example:
+            cartid: [1,2]
+            address: {
+              receiver: "joko",
+              phone: "082302xxxx",
+              address: "malang dkk"
+            }
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/requestDataOrder"
+    requestBodyConfirmOrder:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataOrder"
+          example:
+            paymentname: "transfer bank"
+            numbercard: "12345"
+            paymentcode: "code123"
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/requestDataOrder"
+    requestBodyOrderUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/requestDataOrderUpdate"
+          example:
+            detail: "Email: subs.netflix@mail.com, Password: qwerty"
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/requestDataOrderUpdate"
+  responses:
+    loginSuccess:
+      description: Success Response Data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseLoginWithData"
+          example:
+            code: 200
+            data:
+              {
+                name: joko,
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Mzk2OTAwMjMsInJvbGUiOiJhZG1pbiIsInVzZXJJZCI6NH0.1Ij1ZVqpqPDOVXzaXyqcyNMlnbLTfwD28Byv0aWNjAQ,
+              }
+            message: Login Success
+    loginFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          example:
+            code: 400
+            message: Email or Password Incorrect
+    successOperationNonData:
+      description: Success Response Non Data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          example:
+            code: 200
+            message: Success Operation
+    createUserFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Invalid Name:
+              $ref: "#/components/examples/invalidName"
+            Name alphanumeric:
+              $ref: "#/components/examples/nameAlphanumeric"
+            Invalid Email:
+              $ref: "#/components/examples/invalidEmail"
+            Invalid Password:
+              $ref: "#/components/examples/invalidPassword"
+            Password Must Consist Of:
+              $ref: "#/components/examples/passwordMustConsistOf"
+            Email Already Exist:
+              $ref: "#/components/examples/emailOrTelephoneNumberAlreadyExist"
+    getAllDataFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+    getUserSuccess:
+      description: Success Response Data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseUserWithData"
+          example:
+            code: 200
+            data: { id: 1, name: try, email: try@example.com }
+            message: Success Operation
+    getDataByIdFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Invalid Id:
+              $ref: "#/components/examples/invalidId"
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+    updateUserFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Invalid Id:
+              $ref: "#/components/examples/invalidId"
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+            Access Forbidden:
+              $ref: "#/components/examples/accessForbidden"
+            Invalid Name:
+              $ref: "#/components/examples/invalidName"
+            Invalid Email:
+              $ref: "#/components/examples/invalidEmail"
+            Invalid Password:
+              $ref: "#/components/examples/invalidPassword"
+            Password Must Consist Of:
+              $ref: "#/components/examples/passwordMustConsistOf"
+            Email Already Exist:
+              $ref: "#/components/examples/emailOrTelephoneNumberAlreadyExist"
+    deleteDataByIdFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Access Forbidden:
+              $ref: "#/components/examples/accessForbidden"
+            Invalid Id:
+              $ref: "#/components/examples/invalidId"
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+    createProductFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            File Extension Not Allowed:
+              $ref: "#/components/examples/fileExtensionNotAllowed"
+            Illegal File:
+              $ref: "#/components/examples/illegalFile"
+            Size File Too Big:
+              $ref: "#/components/examples/sizeFileTooBig"
+            Access Forbidden:
+              $ref: "#/components/examples/accessForbidden"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+   
+    getAllProductsSuccess:
+      description: Success Response Data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseProductWithDataArray"
+          example:
+            data:
+              [
+                {
+                  id: 3,
+                  name: Youtube-Music,
+                  detail: Lorem,
+                  photo: Youtube-Music-2021-12-13T10:06:45.jpg,
+                  url: https://storage.googleapis.com/infinitysport-bucket/Youtube-Music-2021-12-13T10:06:45.jpg,
+                  stock: 6,
+                  price: 300000,
+                  userid: 1,
+                },
+                {
+                  id: 4,
+                  name: Youtube Premium,
+                  detail: Berlangganan 1 bulan,
+                  photo: Youtube-Premium-2021-12-14T09:34:47.png,
+                  url: https://storage.googleapis.com/infinitysport-bucket/Youtube-Premium-2021-12-14T09:34:47.png,
+                  stock: 4,
+                  price: 200000,
+                  userid: 2,
+                },
+              ]
+            message: Success
+    getProductSuccess:
+      description: Success Response Data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseProductWithData"
+          example:
+            data:
+              {
+                id: 3,
+                name: Youtube-Music,
+                detail: Lorem,
+                photo: Youtube-Music-2021-12-13T10:06:45.jpg,
+                url: https://storage.googleapis.com/infinitysport-bucket/Youtube-Music-2021-12-13T10:06:45.jpg,
+                stock: 6,
+                price: 300000,
+                userid: 1,
+              }
+            message: Success
+    getProductsByUserIdSuccess:
+      description: Success Response Data
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseProductWithData"
+          example:
+            Data:
+              [
+                {
+                  id: 3,
+                  name: Youtube-Music,
+                  detail: Lorem,
+                  photo: Youtube-Music-2021-12-13T10:06:45.jpg,
+                  url: https://storage.googleapis.com/infinitysport-bucket/Youtube-Music-2021-12-13T10:06:45.jpg,
+                  stock: 6,
+                  price: 300000,
+                  userid: 1,
+                },
+              ]
+            Message: Success
+    updateProductFailed:
+      description: Bad Request Response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Invalid Id:
+              $ref: "#/components/examples/invalidId"
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+            Access Forbidden:
+              $ref: "#/components/examples/accessForbidden"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+            File Extension Not Allowed:
+              $ref: "#/components/examples/fileExtensionNotAllowed"
+            Size File Too Big:
+              $ref: "#/components/examples/sizeFileTooBig"
+    createcartsuccess:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseCreateOrderWithData"
+          example:
+            code: 200
+            message: Success
+    createOrderFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Invalid Param:
+              $ref: "#/components/examples/invalidParam"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+            Access Forbidden:
+              $ref: "#/components/examples/accessForbidden"
+    getcartsuccess:
+      description: Success Operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseOrderWithData"
+          example:
+            Code: 200
+            Data:
+              [
+                {
+                  UserID: 15,
+                  NameProduct: Netflix,
+                  Image: https://img.io/1,
+                  PriceOrder: 1254,
+                  Qty: 1,
+                },
+                {
+                  UserID: 15,
+                  NameProduct: Youtube Premium,
+                  Image: https://img.io/2,
+                  PriceOrder: 4321,
+                  Qty: 1,
+                },
+              ]
+            Message: Success Operation
+    getordersuccess:
+      description: Success Operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseOrderWithData"
+          example:
+            Code: 200
+            Data:
+              [
+                {
+                  ID: 1,
+                  UserID: 5,
+                  AddressID: 1,
+                  PriceOrder: 1254,
+                  Status: "Paid",
+                  Address: {
+                    ID: 1,
+                    Receiver: "alfin",
+                    Phone: "082333xxxxx",
+                    address: "malang dkk..."
+                  }
+                },
+                {
+                  ID: 2,
+                  UserID: 5,
+                  AddressID: 2,
+                  PriceOrder: 5000,
+                  Status: "Unpaid",
+                  Address: {
+                    ID: 2,
+                    Receiver: "yusup",
+                    Phone: "082111111xxxxx",
+                    address: "jakarta dkk..."
+                  }
+                },
+              ]
+            Message: Success Operation
+    getorderbyidsuccess:
+      description: Success Operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseOrderWithData"
+          example:
+            Code: 200
+            Data: [
+              {
+                ID: 1,
+                OrderID: 5,
+                ProductName: "sepatu pak jokowi",
+                Price: 200000,
+                Qty: 2,
+              }
+            ]
+            message: "success"
+    confirmordersuccess:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseCreateOrderWithData"
+          example:
+            code: 200
+            message: Success
+    OrderResponseFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Invalid Id:
+              $ref: "#/components/examples/invalidId"
+            Access Forbidden:
+              $ref: "#/components/examples/dataNotFound"
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+    getAllcartByIdGroupSuccess:
+      description: Success Operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseOrderWithDataArray"
+          example:
+            Code: 200
+            Data:
+              [
+                {
+                  OrderID: 1,
+                  UsersID: 150,
+                  GroupProductID: 1,
+                  NameProduct: Netflix,
+                  PriceOrder: 1254,
+                  DetailCredential: "Email: , Password: ",
+                },
+                {
+                  OrderID: 2,
+                  UsersID: 162,
+                  GroupProductID: 1,
+                  NameProduct: Netfllix,
+                  PriceOrder: 1254,
+                  DetailCredential: "Email: , Password: ",
+                },
+              ]
+            Message: Success Operation
+    getAllcartByIdUserSuccess:
+      description: Success Operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseOrderWithDataArray"
+          example:
+            Code: 200
+            Data:
+              [
+                {
+                  OrderID: 1,
+                  UsersID: 150,
+                  GroupProductID: 1,
+                  NameProduct: Netflix,
+                  PriceOrder: 1254,
+                  DetailCredential: "Email: , Password: ",
+                },
+                {
+                  OrderID: 3,
+                  UsersID: 150,
+                  GroupProductID: 2,
+                  NameProduct: Spotify,
+                  PriceOrder: 1500,
+                  DetailCredential: "Email: , Password: ",
+                },
+              ]
+            Message: Success Operation
+    Updatecartsuccess:
+      description: Success Operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseOrderWithData"
+          example:
+            code: 200
+            message: success to update data
+    UpdateCartFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#"
+          example:
+            code: 400
+            message: failed to update data
+    UpdateOrderFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/responseNonData"
+          examples:
+            Details Can't Be Empty:
+              $ref: "#/components/examples/detailsCantBeEmpty"
+            Invalid Id:
+              $ref: "#/components/examples/invalidId"
+            Access Forbidden:
+              $ref: "#/components/examples/dataNotFound"
+            Data Not Found:
+              $ref: "#/components/examples/dataNotFound"
+            Bad Request:
+              $ref: "#/components/examples/badRequest"
+  examples:
+    accessIsDenied:
+      value:
+        code: 400
+        message: Access is denied ID data is in the orderInvalid Id
+    accessForbidden:
+      value:
+        code: 400
+        message: Access Forbidden
+    badRequest:
+      value:
+        code: 400
+        message: Bad Request
+    cantConnecttoServer:
+      value:
+        code: 500
+        message: Can't Connect to server
+    dataisAvailable:
+      value:
+        code: 400
+        message: Data is Available
+    dataNotFound:
+      value:
+        code: 400
+        message: Data Not Found
+    detailsCantBeEmpty:
+      value:
+        code: 400
+        message: Details Can't Be Empty
+    emailOrTelephoneNumberAlreadyExist:
+      value:
+        code: 400
+        message: Email or Telephone Number Already Exist
+    failedtoUploadFile:
+      value:
+        code: 500
+        message: Failed to Upload File
+    fileExtensionNotAllowed:
+      value:
+        code: 400
+        message: File Extension Not Allowed
+    
+    idProductNotFound:
+      value:
+        code: 400
+        message: Id Product Not Found
+    illegalFile:
+      value:
+        code: 400
+        message: Illegal File
+    invalidEmail:
+      value:
+        code: 400
+        message: Invalid Email
+    invalidId:
+      value:
+        code: 400
+        message: Invalid Id
+    invalidName:
+      value:
+        code: 400
+        message: Invalid Name
+    invalidParam:
+      value:
+        code: 400
+        message: Invalid Param
+    invalidPassword:
+      value:
+        code: 400
+        message: Invalid Password
+    invalidTelephoneNumber:
+      value:
+        code: 400
+        message: Invalid Telephone Number
+    nameAlphanumeric:
+      value:
+        code: 400
+        message: Name can only contains alphanumeric
+    notAvailable:
+      value:
+        code: 400
+        message: Not Available
+    passwordMustConsistOf:
+      value:
+        code: 400
+        message: Password must consist of 6 characters or more
+    sizeFileTooBig:
+      value:
+        code: 400
+        message: Size File Too Big

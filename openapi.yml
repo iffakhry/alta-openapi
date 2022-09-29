@@ -1,0 +1,18 @@
+openapi: '3.0.2'
+info:
+  title: Alta-store
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /users:
+    get:
+      description: Get all users
+      responses:
+        '200':
+          description: OK
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
